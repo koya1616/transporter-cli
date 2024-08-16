@@ -1,0 +1,10 @@
+services:
+  transporter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cli
+    volumes:
+      - .:/app
+    tty: true
+    stdin_open: true
