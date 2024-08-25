@@ -32,7 +32,13 @@ impl Auth {
   }
 
   pub fn read_data(&self) -> std::io::Result<Auth> {
-    let mut file = File::open(RuntimeConfig::global().config_folder.join("auth.json"))?;
+    let mut file = match File::open(RuntimeConfig::global().config_folder.join("auth.json")) {
+      Ok(file) => file,
+      Err(_) => {
+        let _ = self.save_data();
+        File::open(RuntimeConfig::global().config_folder.join("auth.json"))?
+      }
+    };
     let mut contents = String::new();
     file.read_to_string(&mut contents)?;
     let user: Self = serde_json::from_str(&contents)?;
