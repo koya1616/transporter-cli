@@ -1,4 +1,5 @@
 use std::env;
+use std::fs;
 use std::path::PathBuf;
 use std::sync::OnceLock;
 
@@ -11,10 +12,16 @@ pub struct RuntimeConfig {
 
 impl RuntimeConfig {
   fn get_config_file_path() -> PathBuf {
-    env::var("HOME")
+    let path = env::var("HOME")
       .map(PathBuf::from)
       .unwrap_or_else(|_| PathBuf::from("."))
-      .join(".hirata_store")
+      .join(".hirata_store");
+
+    if !path.exists() {
+      fs::create_dir_all(&path).expect("Failed to create config folder")
+    };
+
+    path
   }
 
   pub fn global() -> &'static RuntimeConfig {
