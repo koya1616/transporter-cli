@@ -2,13 +2,13 @@
 run_task = [
   { name = ["fmt", "clippy", "run"] }
 ]
-watch = true
+watch = { watch = ["./src"] }
 
 [tasks.watch-test]
 run_task = [
   { name = ["fmt", "clippy", "test", "run"] }
 ]
-watch = true
+watch = { watch = ["./src"] }
 
 [tasks.fmt]
 command = "cargo"
