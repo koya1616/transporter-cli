@@ -12,7 +12,7 @@ impl SupabaseAuth {
     }
   }
 
-  pub async fn signup(&self, email: String, password: String) -> Result<Response, Error> {
+  pub async fn signup(&self, email: &str, password: &str) -> Result<Response, Error> {
     let url: String = format!("{}/auth/v1/signup", self.supabase_url);
     let mut headers = Headers::new();
     headers.json();
@@ -27,7 +27,7 @@ impl SupabaseAuth {
     Ok(response)
   }
 
-  pub async fn login(&self, email: String, password: String) -> Result<Response, Error> {
+  pub async fn login(&self, email: &str, password: &str) -> Result<Response, Error> {
     let url: String = format!("{}/auth/v1/token?grant_type=password", self.supabase_url);
     let mut headers = Headers::new();
     headers.json();
@@ -42,10 +42,10 @@ impl SupabaseAuth {
     Ok(response)
   }
 
-  pub async fn get_user(&self, user_authorization: String) -> Result<Response, Error> {
+  pub async fn get_user(&self, user_authorization: &str) -> Result<Response, Error> {
     let url: String = format!("{}/auth/v1/user", self.supabase_url);
     let mut headers = Headers::new();
-    headers.set_user_authorization(&user_authorization);
+    headers.set_user_authorization(user_authorization);
 
     let response: Response = Client::new()
       .get(&url)
